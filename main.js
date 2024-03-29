@@ -28,11 +28,45 @@ scene.add(camera);
 /**
  * テクスチャを追加してみよう
  */
-
+const textureLoader = new THREE.TextureLoader();
+const baseTexture = textureLoader.load("./textures/baseMap.jpg");
+const normalMapTexture = textureLoader.load("./textures/normalMap.jpg");
+const heightMapTexture = textureLoader.load("./textures/heightMap.png");
+const roughnessMapTexture = textureLoader.load("./textures/roughnessMap.jpg");
+const aoMapTexture = textureLoader.load("./textures/aoMap.jpg");
 /**
  * テクスチャのマテリアルを用意しよう
  * */
+const materialPlane1 = new THREE.MeshStandardMaterial({ map: baseTexture });
+const materialPlane2 = new THREE.MeshStandardMaterial({
+  map: baseTexture,
+  normalMap: normalMapTexture,
+});
+const materialPlane3 = new THREE.MeshStandardMaterial({
+  map: baseTexture,
+  normalMap: normalMapTexture,
+  displacementMap:heightMapTexture,
+  displacementScale:0.1,
+});
+const materialPlane4 = new THREE.MeshStandardMaterial({
+  map: baseTexture,
+  normalMap: normalMapTexture,
+  displacementMap:heightMapTexture,
+  displacementScale:0.1,
+  roughnessMap:roughnessMapTexture,
+  roughness:0.5,
+});
+const materialPlane5 = new THREE.MeshStandardMaterial({
+  map: baseTexture,
+  normalMap: normalMapTexture,
+  displacementMap:heightMapTexture,
+  displacementScale:0.1,
+  roughnessMap:roughnessMapTexture,
+  roughness:0.5,
+  aoMap:aoMapTexture,
+});
 
+////////////////////////////////////////////////////
 //マテリアル
 const planeMaterial = new THREE.MeshStandardMaterial({
   color: "#ffffff",
@@ -42,6 +76,34 @@ const planeMaterial = new THREE.MeshStandardMaterial({
  * ジオメトリを用意しよう
  */
 
+const plane1 = new THREE.Mesh(
+  new THREE.PlaneGeometry(0.75, 0.75),
+  materialPlane1
+);
+plane1.position.x = -2;
+
+const plane2 = new THREE.Mesh(
+  new THREE.PlaneGeometry(0.75, 0.75),
+  materialPlane2
+);
+plane2.position.x = -1;
+
+const plane3 = new THREE.Mesh(
+  new THREE.PlaneGeometry(0.75, 0.75,512,512),
+  materialPlane3
+);
+plane3.position.x = 0;
+const plane4 = new THREE.Mesh(
+  new THREE.PlaneGeometry(0.75, 0.75,512,512),
+  materialPlane4
+);
+plane4.position.x = 1;
+const plane5 = new THREE.Mesh(
+  new THREE.PlaneGeometry(0.75, 0.75,512,512),
+  materialPlane5
+);
+plane5.position.x = 2;
+////////////////////////////////////////////
 const basePlane = new THREE.Mesh(
   new THREE.PlaneGeometry(10, 10),
   planeMaterial
@@ -49,7 +111,7 @@ const basePlane = new THREE.Mesh(
 basePlane.rotation.x = -Math.PI * 0.5;
 basePlane.position.y = -0.65;
 
-scene.add(basePlane);
+scene.add(basePlane, plane1, plane2,plane3,plane4,plane5);
 
 window.addEventListener("resize", () => {
   sizes.width = window.innerWidth;
